@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dat.3be.vn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Bài viết hôm nay sẽ hướng dẫn các bạn cách lấy Zone ID và tạo API Token từ Cloudflare một cách nhanh chóng và dễ dàng. Chúng ta sẽ thường xuyên cần sử dụng Zone ID và API Token khi thiết lập và cấu h">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cloudflare: Hướng dẫn lấy Zone ID và tạo API Token nhanh chóng">
+<meta property="og:url" content="https://dat.3be.vn/2025/01/16/Cloudflare-Huong-dan-lay-Zone-ID-va-tao-API-Token-nhanh-chong/">
+<meta property="og:site_name" content="DatBlog">
+<meta property="og:description" content="Bài viết hôm nay sẽ hướng dẫn các bạn cách lấy Zone ID và tạo API Token từ Cloudflare một cách nhanh chóng và dễ dàng. Chúng ta sẽ thường xuyên cần sử dụng Zone ID và API Token khi thiết lập và cấu h">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:image" content="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token.png">
+<meta property="og:image" content="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-1.png">
+<meta property="og:image" content="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-2.jpg">
+<meta property="og:image" content="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-3.jpg">
+<meta property="og:image" content="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-4.png">
+<meta property="og:image" content="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-5.jpg">
+<meta property="og:image" content="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-6.png">
+<meta property="og:image" content="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-7.png">
+<meta property="og:image" content="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-8.png">
+<meta property="article:published_time" content="2025-01-16T02:02:47.000Z">
+<meta property="article:modified_time" content="2025-01-16T02:17:22.179Z">
+<meta property="article:author" content="Đạt">
+<meta property="article:tag" content="API Token">
+<meta property="article:tag" content="Cloudflare">
+<meta property="article:tag" content="Zone ID">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token.png">
+
+<link rel="canonical" href="https://dat.3be.vn/2025/01/16/Cloudflare-Huong-dan-lay-Zone-ID-va-tao-API-Token-nhanh-chong/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'vi'
+  };
+</script>
+
+  <title>Cloudflare: Hướng dẫn lấy Zone ID và tạo API Token nhanh chóng | DatBlog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Thanh điều hướng chuyển đổi">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">DatBlog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">do what i love & love what i do</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Trang Chủ</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Lưu Trữ</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="vi">
+    <link itemprop="mainEntityOfPage" href="https://dat.3be.vn/2025/01/16/Cloudflare-Huong-dan-lay-Zone-ID-va-tao-API-Token-nhanh-chong/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Đạt">
+      <meta itemprop="description" content="Góc chia sẻ và lưu trữ của Đạt về IT">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DatBlog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cloudflare: Hướng dẫn lấy Zone ID và tạo API Token nhanh chóng
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Tạo lúc</span>
+              
+
+              <time title="Được tạo: 16-01-2025 09:02:47 / Được thay đổi: 09:17:22" itemprop="dateCreated datePublished" datetime="2025-01-16T09:02:47+07:00">16-01-2025</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token.png" alt="# Cloudflare: Hướng dẫn lấy Zone ID và tạo API Token nhanh chóng"></p>
+<p>Bài viết hôm nay sẽ hướng dẫn các bạn cách lấy Zone ID và tạo API Token từ Cloudflare một cách nhanh chóng và dễ dàng. Chúng ta sẽ thường xuyên cần sử dụng Zone ID và API Token khi thiết lập và cấu hình mạng, chẳng hạn như cấu hình <a target="_blank" rel="noopener" href="https://thuanbui.me/tag/dynamic-dns/">Dynamic DNS</a> hay thiết lập <a target="_blank" rel="noopener" href="https://thuanbui.me/tag/wildcard-ssl/">Wildcard SSL</a>.</p>
+<iframe width="720" height="405" src="https://www.youtube.com/embed/7__JbIMybRo" title="Cloudflare: Hướng dẫn lấy Zone ID và tạo API Token nhanh chóng" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<h2 id="Zone-ID-la-gi"><a href="#Zone-ID-la-gi" class="headerlink" title="Zone ID là gì?"></a>Zone ID là gì?</h2><p>Zone ID là mã số định danh duy nhất cho từng tên miền (zone) mà bạn quản lý trên Cloudflare. Zone ID được sử dụng trong nhiều lệnh API của Cloudflare để xác định chính xác tên miền mà bạn muốn thao tác.</p>
+<p><em>Ví dụ:</em> Khi bạn muốn cập nhật DNS thông qua API, bạn sẽ cần cung cấp Zone ID để Cloudflare biết tên miền nào cần chỉnh sửa.</p>
+<p><img src="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-1.png" alt="Zone ID trong Cloudflare"></p>
+<h2 id="Cach-lay-Zone-ID-tren-Cloudflare"><a href="#Cach-lay-Zone-ID-tren-Cloudflare" class="headerlink" title="Cách lấy Zone ID trên Cloudflare"></a>Cách lấy Zone ID trên Cloudflare</h2><p>Truy cập vào trang chủ của Cloudflare tại <a target="_blank" rel="noopener" href="https://www.cloudflare.com/">https://www.cloudflare.com</a> và đăng nhập vào tài khoản của bạn.</p>
+<p>Sau khi đăng nhập, bạn sẽ thấy danh sách các tên miền đã thêm vào Cloudflare. Bấm chọn vào tên miền bạn muốn tìm Zone ID.</p>
+<p><img src="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-2.jpg" alt="Danh sách tên miền trên Cloudflare"></p>
+<p>Sau khi vào trang quản lý của tên miền, kéo xuống dưới cùng của trang <strong>Overview</strong>, phía cột bên phải bạn sẽ thấy mục <strong>Zone ID</strong> nằm trong phần <strong>API</strong>.</p>
+<p><em>Ví dụ:</em></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Zone</span> ID: <span class="number">43423423423432430</span>abcdef</span><br></pre></td></tr></table></figure>
+
+<p>Hãy sao chép Zone ID này lại để sử dụng khi cần.</p>
+<h2 id="API-Token-la-gi-va-tai-sao-can-tao-API-Token"><a href="#API-Token-la-gi-va-tai-sao-can-tao-API-Token" class="headerlink" title="API Token là gì và tại sao cần tạo API Token?"></a>API Token là gì và tại sao cần tạo API Token?</h2><p>API Token là mã thông báo bảo mật cho phép truy cập và thực hiện các thao tác trên Cloudflare thông qua API. Bạn có thể tạo các API Token với quyền hạn cụ thể tùy vào từng mục đích sử dụng, giúp tăng cường bảo mật.</p>
+<p><img src="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-3.jpg" alt="API Token trong Cloudflare"></p>
+<p><em>Ví dụ:</em> bạn có thể tạo một API Token chỉ để cập nhật DNS, hoặc một API Token khác để quản lý Firewall Rules.</p>
+<h2 id="Cach-tao-API-Token-tren-Cloudflare"><a href="#Cach-tao-API-Token-tren-Cloudflare" class="headerlink" title="Cách tạo API Token trên Cloudflare"></a>Cách tạo API Token trên Cloudflare</h2><ol>
+<li><p>Truy cập vào <a target="_blank" rel="noopener" href="https://dash.cloudflare.com/profile/api-tokens">https://dash.cloudflare.com/profile/api-tokens</a> để vào trang quản lý API Tokens. Hoặc từ trang chủ Cloudflare, bấm vào biểu tượng Tài khoản rồi chọn <strong>My Profile</strong>.</p>
+</li>
+<li><p>Tiếp theo, bấm chọn vào mục <strong>API Token</strong> ở Menu bên trái.</p>
+</li>
+</ol>
+<p><img src="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-4.png" alt="Menu API Token trong Cloudflare"></p>
+<ol start="3">
+<li>Để tạo Token mới, bấm vào nút <strong>Create Token</strong>.</li>
+</ol>
+<p><img src="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-5.jpg" alt="Tạo API Token mới"></p>
+<ol start="4">
+<li>Cloudflare đã tạo sẵn nhiều mẫu (template) để chúng ta có thể cấu hình nhanh thông số cho Token. Nếu chỉ cần API Token liên quan đến DNS, bấm chọn vào nút <strong>Use template</strong> của mục <strong>Edit Zone DNS</strong>.</li>
+</ol>
+<p><img src="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-6.png" alt="Chọn template Edit Zone DNS"></p>
+<ol start="5">
+<li>Tiếp theo, cấu hình quyền cho Token:<ul>
+<li>Chọn quyền <strong>Zone:Edit</strong> để có thể đọc và chỉnh sửa thông tin của tên miền.</li>
+<li>Chọn cụ thể tên miền (hoặc tất cả tên miền) mà API Token này sẽ được phép truy cập.</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-7.png" alt="Cấu hình quyền cho Token"></p>
+<ol start="6">
+<li>Bấm <strong>Continue to Summary</strong>, sau đó bấm <strong>Create Token</strong> để xác nhận.</li>
+</ol>
+<p><img src="https://thuanbui.me/wp-content/uploads/2025/01/cloudflare-zone-id-api-token-8.png" alt="Xác nhận tạo API Token"></p>
+<ol start="7">
+<li>Cloudflare sẽ hiển thị mã API Token của bạn một lần duy nhất. Hãy sao chép và lưu lại mã này để sử dụng.</li>
+</ol>
+<p><em>Lưu ý:</em> Không chia sẻ API Token của bạn với người khác và tránh lưu trữ ở những nơi không an toàn.</p>
+<h2 id="Luu-y-bao-mat"><a href="#Luu-y-bao-mat" class="headerlink" title="Lưu ý bảo mật"></a>Lưu ý bảo mật</h2><ul>
+<li>Bạn nên sử dụng API Token thay vì Global API Key để tăng cường bảo mật.</li>
+<li>Chỉ cấp các quyền cần thiết cho API Token.</li>
+<li>Mỗi ứng dụng nên sử dụng một API Token riêng.</li>
+<li>Xóa các API Token không còn sử dụng.</li>
+<li>Sử dụng các công cụ quản lý mật khẩu như Bitwarden hoặc 1Password để lưu trữ API Token an toàn.</li>
+</ul>
+<hr>
+<p><em>Bài viết gốc được đăng tại: <a target="_blank" rel="noopener" href="https://thuanbui.me/cloudflare-zone-id-api-token/">https://thuanbui.me/cloudflare-zone-id-api-token/</a></em></p>
+<p><em>Người viết: <a target="_blank" rel="noopener" href="https://thuanbui.me/about/">Thuận Bùi</a></em></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/API-Token/" rel="tag"># API Token</a>
+              <a href="/tags/Cloudflare/" rel="tag"># Cloudflare</a>
+              <a href="/tags/Zone-ID/" rel="tag"># Zone ID</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/16/ChatGPT-khong-con-la-danh-tu/" rel="next" title="ChatGPT không còn là danh từ">
+      ChatGPT không còn là danh từ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Mục Lục
+        </li>
+        <li class="sidebar-nav-overview">
+          Tổng Quan
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Zone-ID-la-gi"><span class="nav-number">1.</span> <span class="nav-text">Zone ID là gì?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cach-lay-Zone-ID-tren-Cloudflare"><span class="nav-number">2.</span> <span class="nav-text">Cách lấy Zone ID trên Cloudflare</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-Token-la-gi-va-tai-sao-can-tao-API-Token"><span class="nav-number">3.</span> <span class="nav-text">API Token là gì và tại sao cần tạo API Token?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cach-tao-API-Token-tren-Cloudflare"><span class="nav-number">4.</span> <span class="nav-text">Cách tạo API Token trên Cloudflare</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Luu-y-bao-mat"><span class="nav-number">5.</span> <span class="nav-text">Lưu ý bảo mật</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Đạt</p>
+  <div class="site-description" itemprop="description">Góc chia sẻ và lưu trữ của Đạt về IT</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">bài viết</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">thẻ</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Đạt</span>
+</div>
+  <div class="powered-by">Cung cấp bởi <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
